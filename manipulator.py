@@ -13,15 +13,42 @@ WEIRD_SRT = "This is not a path!"
 
 
 def linear_function(x0, y0, x1, y1, x):
+    """
+    Parameters
+    ----------
+    x0, y0, x1, y1, x : float or datetime.datetime
+
+    Returns
+    -------
+    float or datetime.datetime
+        Returns the value of linear function trough
+        :math:`(x_0, y_0)` and  :math:`(x_1, y_1)`, in point `x`.
+    """
     proportion = (x - x0) / (x1 - x0)
     return proportion * (y1 - y0) + y0
 
 
 def load_srt(srt_file):
     """
-    contains lists like ['1', '00:00:04,846 --> 00:00:05,544', 'Hello, there.', 'Hello.']
-    :param srt_file:
-    :return:
+    Loads the subtitles from a given file.
+
+    Parameters
+    ----------
+    srt_file : str
+        Path to the file with subtitles, e.g. C:\\Users\joe\\movie\\subs.srt
+
+    Returns
+    -------
+    subs : list of list of object
+        The elements of `subs` are lists, e.g.,
+        ['1', [<time start>, <time end>], 'Hello, there.', '\n'],
+        of length at least four whose
+         - first element is the consecutive number of subtitle
+         - second element is a list, containing the start and the end time
+           of the subtitle, parsed to `datetime` objects
+         - 3rd, ... , (the last but one)-th element are lines of the text
+           in the subtitle
+         - last element is a new line string
     """
     subs = []
     success = False
@@ -56,6 +83,44 @@ def load_srt(srt_file):
 
 
 def load_corrections(corrections_file):
+    """
+    Loads the corrected values from a given file. Each line of this file
+    is of the form  `<old time>@<new time>`, e.g.,
+    `01:12:22,300@01:12:23,500`. In the function `update_times`,
+    `old times` will be converted to `new times`, according to these values,
+    e.g., the file
+        
+    | `00:10:00,300@00:10:01,500`   
+    | `01:12:22,000@01:12:23,200`
+    | `01:30:00,000@01:31:00,000`
+
+    will result in the following transformations:
+    
+    - the times from the interval `00:10:00,300--01:12:22,000` are mapped
+      (via linear function)
+      to the interval `00:10:01,500--01:12:23,200` (which results in a `1.2`
+      second offset),
+    - the times from the interval `01:12:22,000--01:30:00,000` are mapped
+      (via linear function) to the interval `01:12:23,200--01:31:00,000`
+      (no nice interpretation).
+    
+    
+    Parameters
+    ----------
+    corrections_file : str
+        Path to the file with corrections, e.g. C:/Users\joe/movie/c.txt
+
+    Returns
+    -------
+    corrected_times : list of list of datetime
+        The elements of `corrected_times` are the pairs of the times
+        specified in the `corrections_file`. 
+
+    See Also
+    --------
+    update_times 
+    linear_function
+    """
     corrected_times = []
     with open(corrections_file) as f:
         for line in f:
@@ -71,7 +136,24 @@ def load_corrections(corrections_file):
 
 
 def update_with_sentinels(subs, corrected_times, mode):
-    # sentinels: time span of corrections must contain the t. s. of subtitles
+    """
+    Updates the corrections of the times, so that the times span of corrections
+    contains the time span of the subtitles.
+        
+    Parameters
+    ----------
+    subs : list of list of object
+        As returned by `load_srt`
+    corrected_times : list of list of datetime
+        As returned by `load_corrections`. This list is updated.
+    mode : str
+        Either `LINEAR` or `TRANSLATION`. If LINEAR, `corrected_times` must
+        contain at least two elements to make extrapolation possible.
+    
+    Returns
+    -------
+    None
+    """
     dt = corrected_times[0][1] - corrected_times[0][0] if mode == TRANSLATION else timedelta(seconds=2)
     if subs[0][1][0] < corrected_times[0][0]:
         if mode == LINEAR:
@@ -98,6 +180,28 @@ def update_with_sentinels(subs, corrected_times, mode):
 
 
 def update_times(srt_file, corrected_times_file, offset):
+    """
+    Computes the updated times according to the specified corrections.
+    The results are written to a new file that appears in the same directory
+    as the file with original subtitles.
+    
+    Parameters
+    ----------
+    srt_file : str
+        Path to the file with the original subtitles, e.g.,
+        C:/Users\joe/movie/sub.srt
+    corrected_times_file : str or None
+        Path to the file with the suggested corrections of the times, e.g.,
+        C:/Users/joe/movie/c.txt
+    offset : float or None
+        Time (in secods) for which the subtitles should be translated.
+        Positive values are used when the original subtitles appear too early.
+        
+    Precisely one of the parameters `corrected_times_file` and `offset` must
+    be `None`. If the latter is None, the corrections are loaded from the
+    specified file `corrected_times_file`. If the former is None,
+    the corrections are computed automatically.
+    """
     number_none = (corrected_times_file is None) + (offset is None)
     assert number_none == 1
     subs, encoding = load_srt(srt_file)
