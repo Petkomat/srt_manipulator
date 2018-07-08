@@ -4,9 +4,9 @@ import argparse
 import locale
 
 
+SRT_TIME_FORMAT = "%H:%M:%S,%f"  # hours:minutes:seconds,milliseconds
 ARROW = "-->"
 TIME_SEPARATOR = "@"
-SRT_TIME_FORMAT = "%H:%M:%S,%f"  # hours:minutes:seconds,milliseconds
 LINEAR = "LINEAR"
 TRANSLATION = "TRANSLATION"
 WEIRD_SRT = "This is not a path!"
@@ -26,6 +26,21 @@ def linear_function(x0, y0, x1, y1, x):
     """
     proportion = (x - x0) / (x1 - x0)
     return proportion * (y1 - y0) + y0
+
+
+def time_to_string(t):
+    """
+    SRT-formatted string representation a given time.
+
+    Parameters
+    ----------
+    t : datetime
+
+    Returns
+    -------
+    str
+    """
+    return t.strftime(SRT_TIME_FORMAT)[:-3]
 
 
 def load_srt(srt_file):
@@ -158,8 +173,8 @@ def update_with_sentinels(subs, corrected_times, mode):
     if subs[0][1][0] < corrected_times[0][0]:
         if mode == LINEAR:
             print("WARNING: The first subtitle start ({}) "
-                  "precedes the first corrected value ({}).".format(subs[0][1][0].strftime(SRT_TIME_FORMAT),
-                                                                    corrected_times[0][0].strftime(SRT_TIME_FORMAT)))
+                  "precedes the first corrected value ({}).".format(time_to_string(subs[0][1][0]),
+                                                                    time_to_string(corrected_times[0][0])))
             print("    Extrapolation will be used at the beginning.")
         else:
             sentinel_start = subs[0][1][0]
@@ -167,8 +182,8 @@ def update_with_sentinels(subs, corrected_times, mode):
     if subs[-1][1][1] > corrected_times[-1][1]:
         if mode == LINEAR:
             print("WARNING: The last subtitle ({}) "
-                  "ends after the last corrected value ({}).".format(subs[-1][1][1].strftime(SRT_TIME_FORMAT),
-                                                                     corrected_times[-1][1].strftime(SRT_TIME_FORMAT)))
+                  "ends after the last corrected value ({}).".format(time_to_string(subs[-1][1][1]),
+                                                                     time_to_string(corrected_times[-1][1])))
             fake_time = subs[-1][1][1] + dt
             t0_wrong, t0_right = corrected_times[-2]
             t1_wrong, t1_right = corrected_times[-1]
@@ -194,7 +209,7 @@ def update_times(srt_file, corrected_times_file, offset):
         Path to the file with the suggested corrections of the times, e.g.,
         C:/Users/joe/movie/c.txt
     offset : float or None
-        Time (in secods) for which the subtitles should be translated.
+        Time (in seconds) for which the subtitles should be translated.
         Positive values are used when the original subtitles appear too early.
         
     Precisely one of the parameters `corrected_times_file` and `offset` must
@@ -231,7 +246,7 @@ def update_times(srt_file, corrected_times_file, offset):
                     which_pair += 1
                 t0_wrong, t0_right = corrected_times[which_pair]
                 t1_wrong, t1_right = corrected_times[which_pair + 1]
-                sub[1][i] = linear_function(t0_wrong, t0_right, t1_wrong, t1_right, t).strftime(SRT_TIME_FORMAT)
+                sub[1][i] = time_to_string(linear_function(t0_wrong, t0_right, t1_wrong, t1_right, t))
             sub[1] = "{} {} {}".format(sub[1][0], ARROW, sub[1][1])
             print("\n".join(sub), file=f)
     print("Updated subtitles written to", srt_file_out)
