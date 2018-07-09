@@ -1,0 +1,365 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>manipulator module &mdash; SRT manipulator 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="SRT manipulator 1.0 documentation" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SRT manipulator 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-manipulator">
+<span id="manipulator-module"></span><h1>manipulator module<a class="headerlink" href="#module-manipulator" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="manipulator.linear_function">
+<code class="descclassname">manipulator.</code><code class="descname">linear_function</code><span class="sig-paren">(</span><em>x0</em>, <em>y0</em>, <em>x1</em>, <em>y1</em>, <em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#manipulator.linear_function" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>x0, y0, x1, y1, x</strong> : float or datetime.datetime</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">float or datetime.datetime</p>
+<blockquote class="last">
+<div><p>Returns the value of linear function trough
+<span class="math">\((x_0, y_0)\)</span> and  <span class="math">\((x_1, y_1)\)</span>, in point <cite>x</cite>.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">linear_function</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+<span class="go">18.0</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x0</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y0</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x1</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y1</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">59</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">linear_function</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span class="go">datetime.datetime(2018, 1, 1, 0, 3)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="manipulator.load_corrections">
+<code class="descclassname">manipulator.</code><code class="descname">load_corrections</code><span class="sig-paren">(</span><em>corrections_file</em><span class="sig-paren">)</span><a class="headerlink" href="#manipulator.load_corrections" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the corrected values from a given file. Each line of this file
+is of the form  <cite>&lt;old time&gt;&#64;&lt;new time&gt;</cite>, e.g.,
+<cite>01:12:22,300&#64;01:12:23,500</cite>. In the function <cite>update_times</cite>,
+<cite>old times</cite> will be converted to <cite>new times</cite>, according to these values,
+e.g., the file</p>
+<div class="line-block">
+<div class="line"><cite>00:10:00,300&#64;00:10:01,500</cite>   </div>
+<div class="line"><cite>01:12:22,000&#64;01:12:23,200</cite></div>
+<div class="line"><cite>01:30:00,000&#64;01:31:00,000</cite></div>
+</div>
+<p>will result in the following transformations:</p>
+<ul class="simple">
+<li>the times from the interval <cite>00:10:00,300&#8211;01:12:22,000</cite> are mapped
+(via linear function)
+to the interval <cite>00:10:01,500&#8211;01:12:23,200</cite> (which results in a <cite>1.2</cite>
+second offset),</li>
+<li>the times from the interval <cite>01:12:22,000&#8211;01:30:00,000</cite> are mapped
+(via linear function) to the interval <cite>01:12:23,200&#8211;01:31:00,000</cite>
+(no nice interpretation).</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>corrections_file</strong> : str</p>
+<blockquote>
+<div><p>Path to the file with corrections.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>corrected_times</strong> : list of list of datetime</p>
+<blockquote class="last">
+<div><p>The elements of <cite>corrected_times</cite> are the pairs of the times
+specified in the <cite>corrections_file</cite>.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#manipulator.update_times" title="manipulator.update_times"><code class="xref py py-obj docutils literal"><span class="pre">update_times</span></code></a>, <a class="reference internal" href="#manipulator.linear_function" title="manipulator.linear_function"><code class="xref py py-obj docutils literal"><span class="pre">linear_function</span></code></a></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">load_corrections</span><span class="p">(</span><span class="s">&#39;examples/corrections.txt&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="manipulator.load_srt">
+<code class="descclassname">manipulator.</code><code class="descname">load_srt</code><span class="sig-paren">(</span><em>srt_file</em><span class="sig-paren">)</span><a class="headerlink" href="#manipulator.load_srt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the subtitles from a given file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>srt_file</strong> : str</p>
+<blockquote>
+<div><p>Path to the file with subtitles.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>subs</strong> : list of list of object</p>
+<blockquote class="last">
+<div><p>List of subtitles. Every subtitle is described as a list</p>
+<p><cite>[&lt;number&gt;, [&lt;time start&gt;, &lt;time end&gt;], &lt;first line&gt;, ..., &lt;last line&gt;, &lt;empty line&gt;]</cite></p>
+<dl class="docutils">
+<dt>of length at least four. Its elements are:</dt>
+<dd><ul class="first last simple">
+<li>1st: consecutive number of subtitle (as str)</li>
+<li>2nd: a list, containing the start and the end time
+of the subtitle, parsed to <cite>datetime</cite> objects</li>
+<li>3rd&#8211;(the last but one)-th: lines of the text in the subtitle (as str)</li>
+<li>last: the empty string</li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">load_srt</span><span class="p">(</span><span class="s">&#39;examples/subs.srt&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="manipulator.replace_backslash">
+<code class="descclassname">manipulator.</code><code class="descname">replace_backslash</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="headerlink" href="#manipulator.replace_backslash" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replaces backslashes with slashes in the path.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>s</strong> : str</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="manipulator.time_to_string">
+<code class="descclassname">manipulator.</code><code class="descname">time_to_string</code><span class="sig-paren">(</span><em>t</em><span class="sig-paren">)</span><a class="headerlink" href="#manipulator.time_to_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>SRT-formatted string representation a given time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>t</strong> : datetime</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">manipulator</span><span class="o">.</span><span class="n">time_to_string</span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">59</span><span class="p">,</span> <span class="mi">123</span><span class="p">))</span>
+<span class="go">&#39;00:02:59,000&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">manipulator</span><span class="o">.</span><span class="n">time_to_string</span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">59</span><span class="p">,</span> <span class="mi">123456</span><span class="p">))</span>
+<span class="go">&#39;00:02:59,123&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">manipulator</span><span class="o">.</span><span class="n">time_to_string</span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">59</span><span class="p">,</span> <span class="mi">12399</span><span class="p">))</span>
+<span class="go">&#39;00:02:59,012&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">manipulator</span><span class="o">.</span><span class="n">time_to_string</span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">59</span><span class="p">,</span> <span class="mi">123999</span><span class="p">))</span>
+<span class="go">&#39;00:02:59,123&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="manipulator.update_times">
+<code class="descclassname">manipulator.</code><code class="descname">update_times</code><span class="sig-paren">(</span><em>srt_file</em>, <em>corrected_times_file</em>, <em>offset</em><span class="sig-paren">)</span><a class="headerlink" href="#manipulator.update_times" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the updated times according to the specified corrections.
+The results are written to a new file that appears in the same directory
+as the file with original subtitles.</p>
+<p>Precisely one of the parameters <cite>corrected_times_file</cite> and <cite>offset</cite> must
+be <cite>None</cite>. If the latter is None, the corrections are loaded from the
+specified file <cite>corrected_times_file</cite>. If the former is None,
+the corrections are computed automatically.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>srt_file</strong> : str</p>
+<blockquote>
+<div><p>Path to the file with the original subtitles</p>
+</div></blockquote>
+<p><strong>corrected_times_file</strong> : str or None</p>
+<blockquote>
+<div><p>Path to the file with the suggested corrections of the times</p>
+</div></blockquote>
+<p><strong>offset</strong> : float or None</p>
+<blockquote>
+<div><p>Time (in seconds) for which the subtitles should be translated.
+Positive values are used when the original subtitles appear too early.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>srt_out_file</strong> : str</p>
+<blockquote class="last">
+<div><p>The name of the file with modified subtitles.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">update_times</span><span class="p">(</span><span class="s">&#39;examples/subs.srt&#39;</span><span class="p">,</span> <span class="s">&#39;examples/corrections.txt&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+<span class="go">Subtitles examples/subs.srt loaded.</span>
+<span class="go">WARNING: The last subtitle (01:06:14,881) ends after the last corrected value (01:06:12,205).</span>
+<span class="go">    Extrapolation will be used at the end.</span>
+<span class="go">Updated subtitles written to examples/subs_corrections.srt</span>
+<span class="go">&#39;examples/subs_corrections.srt&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">update_times</span><span class="p">(</span><span class="s">&#39;examples/subs.srt&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mf">2.5</span><span class="p">))</span>
+<span class="go">Subtitles examples/subs.srt loaded.</span>
+<span class="go">Updated subtitles written to examples/subs_plus2point5s.srt</span>
+<span class="go">&#39;examples/subs_plus2point5s.srt&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="manipulator.update_with_sentinels">
+<code class="descclassname">manipulator.</code><code class="descname">update_with_sentinels</code><span class="sig-paren">(</span><em>subs</em>, <em>corrected_times</em>, <em>mode</em><span class="sig-paren">)</span><a class="headerlink" href="#manipulator.update_with_sentinels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the corrections of the times, so that the times span of corrections
+contains the time span of the subtitles.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>subs</strong> : list of list of object</p>
+<blockquote>
+<div><p>As returned by <cite>load_srt</cite></p>
+</div></blockquote>
+<p><strong>corrected_times</strong> : list of list of datetime</p>
+<blockquote>
+<div><p>As returned by <cite>load_corrections</cite>. This list is updated.</p>
+</div></blockquote>
+<p><strong>mode</strong> : str</p>
+<blockquote>
+<div><p>Either <cite>LINEAR</cite> or <cite>TRANSLATION</cite>. If LINEAR, <cite>corrected_times</cite> must
+contain at least two elements to make extrapolation possible.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/manipulator.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, petkomat.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.3</a>
+      
+      |
+      <a href="_sources/manipulator.txt"
+          rel="nofollow">Page source</a></li>
+    </div>
+
+    
+
+    
+  </body>
+</html>
