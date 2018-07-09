@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 import os
 import argparse
 import locale
+import re
 
 
 SRT_TIME_FORMAT = "%H:%M:%S,%f"  # hours:minutes:seconds,milliseconds
@@ -10,6 +11,22 @@ TIME_SEPARATOR = "@"
 LINEAR = "LINEAR"
 TRANSLATION = "TRANSLATION"
 WEIRD_SRT = "This is not a path!"
+
+
+def replace_backslash(s):
+    """
+    Replaces backslashes with slashes in the path.
+
+    Parameters
+    ----------
+        s : str
+
+    Returns
+    -------
+        str
+
+    """
+    return re.sub('\\\\', '/', s)
 
 
 def linear_function(x0, y0, x1, y1, x):
@@ -23,6 +40,20 @@ def linear_function(x0, y0, x1, y1, x):
     float or datetime.datetime
         Returns the value of linear function trough
         :math:`(x_0, y_0)` and  :math:`(x_1, y_1)`, in point `x`.
+
+    Examples
+    --------
+    >>> linear_function(1, 2, 2, 4, 9)
+    18.0
+
+    >>> x0 = datetime(2018, 1, 1, 0, 0, 5)
+    >>> y0 = datetime(2018, 1, 1, 0, 0, 6)
+    >>> x1 = datetime(2018, 1, 1, 0, 1, 4)
+    >>> y1 = datetime(2018, 1, 1, 0, 1, 5)
+    >>> x = datetime(2018, 1, 1, 0, 2, 59)
+    >>> linear_function(x0, y0, x1, y1, x)
+    datetime.datetime(2018, 1, 1, 0, 3)
+
     """
     proportion = (x - x0) / (x1 - x0)
     return proportion * (y1 - y0) + y0
@@ -39,6 +70,21 @@ def time_to_string(t):
     Returns
     -------
     str
+
+    Examples
+    --------
+    >>> manipulator.time_to_string(datetime(2018, 1, 1, 0, 2, 59, 123))
+    '00:02:59,000'
+
+    >>> manipulator.time_to_string(datetime(2018, 1, 1, 0, 2, 59, 123456))
+    '00:02:59,123'
+
+    >>> manipulator.time_to_string(datetime(2018, 1, 1, 0, 2, 59, 12399))
+    '00:02:59,012'
+
+    >>> manipulator.time_to_string(datetime(2018, 1, 1, 0, 2, 59, 123999))
+    '00:02:59,123'
+
     """
     return t.strftime(SRT_TIME_FORMAT)[:-3]
 
@@ -50,20 +96,27 @@ def load_srt(srt_file):
     Parameters
     ----------
     srt_file : str
-        Path to the file with subtitles, e.g. C:\\Users\joe\\movie\\subs.srt
+        Path to the file with subtitles.
 
     Returns
     -------
     subs : list of list of object
-        The elements of `subs` are lists, e.g.,
-        ['1', [<time start>, <time end>], 'Hello, there.', '\n'],
-        of length at least four whose
-         - first element is the consecutive number of subtitle
-         - second element is a list, containing the start and the end time
+        List of subtitles. Every subtitle is described as a list
+
+        `[<number>, [<time start>, <time end>], <first line>, ..., <last line>, <empty line>]`
+
+        of length at least four. Its elements are:
+         - 1st: consecutive number of subtitle (as str)
+         - 2nd: a list, containing the start and the end time
            of the subtitle, parsed to `datetime` objects
-         - 3rd, ... , (the last but one)-th element are lines of the text
-           in the subtitle
-         - last element is a new line string
+         - 3rd--(the last but one)-th: lines of the text in the subtitle (as str)
+         - last: the empty string
+
+    Examples
+    --------
+    >>> s = load_srt('examples/subs.srt')
+    >>>
+
     """
     subs = []
     success = False
@@ -123,18 +176,24 @@ def load_corrections(corrections_file):
     Parameters
     ----------
     corrections_file : str
-        Path to the file with corrections, e.g. C:/Users\joe/movie/c.txt
+        Path to the file with corrections.
 
     Returns
     -------
     corrected_times : list of list of datetime
         The elements of `corrected_times` are the pairs of the times
-        specified in the `corrections_file`. 
+        specified in the `corrections_file`.
 
     See Also
     --------
     update_times 
     linear_function
+
+    Examples
+    --------
+    >>> c = load_corrections('examples/corrections.txt')
+    >>>
+
     """
     corrected_times = []
     with open(corrections_file) as f:
@@ -168,6 +227,7 @@ def update_with_sentinels(subs, corrected_times, mode):
     Returns
     -------
     None
+
     """
     dt = corrected_times[0][1] - corrected_times[0][0] if mode == TRANSLATION else timedelta(seconds=2)
     if subs[0][1][0] < corrected_times[0][0]:
@@ -199,24 +259,61 @@ def update_times(srt_file, corrected_times_file, offset):
     Computes the updated times according to the specified corrections.
     The results are written to a new file that appears in the same directory
     as the file with original subtitles.
-    
-    Parameters
-    ----------
-    srt_file : str
-        Path to the file with the original subtitles, e.g.,
-        C:/Users\joe/movie/sub.srt
-    corrected_times_file : str or None
-        Path to the file with the suggested corrections of the times, e.g.,
-        C:/Users/joe/movie/c.txt
-    offset : float or None
-        Time (in seconds) for which the subtitles should be translated.
-        Positive values are used when the original subtitles appear too early.
-        
+
     Precisely one of the parameters `corrected_times_file` and `offset` must
     be `None`. If the latter is None, the corrections are loaded from the
     specified file `corrected_times_file`. If the former is None,
     the corrections are computed automatically.
+    
+    Parameters
+    ----------
+    srt_file : str
+        Path to the file with the original subtitles
+    corrected_times_file : str or None
+        Path to the file with the suggested corrections of the times
+    offset : float or None
+        Time (in seconds) for which the subtitles should be translated.
+        Positive values are used when the original subtitles appear too early.
+
+    Returns
+    -------
+    srt_out_file : str
+        The name of the file with modified subtitles.
+
+    Examples
+    --------
+    >>> update_times('examples/subs.srt', 'examples/corrections.txt', None)
+    Subtitles examples/subs.srt loaded.
+    WARNING: The last subtitle (01:06:14,881) ends after the last corrected value (01:06:12,205).
+        Extrapolation will be used at the end.
+    Updated subtitles written to examples/subs_corrections.srt
+    'examples/subs_corrections.srt'
+
+    >>> update_times('examples/subs.srt', None, timedelta(seconds=2.5))
+    Subtitles examples/subs.srt loaded.
+    Updated subtitles written to examples/subs_plus2point5s.srt
+    'examples/subs_plus2point5s.srt'
+
     """
+
+    def find_output_name():
+        dot = srt_file.rfind('.')
+        orig_part = srt_file if dot < 0 else srt_file[:dot]
+        appendix = "" if dot < 0 else srt_file[dot:]
+        if mode == LINEAR:
+            slash = corrected_times_file.rfind("/")
+            dot_corrected = corrected_times_file.rfind(".")
+            if dot_corrected > 0:
+                corrected_name = corrected_times_file[slash + 1:dot_corrected]
+            else:
+                corrected_name = corrected_times_file[slash + 1:]
+            new_part = "_" + corrected_name
+        else:
+            sign = ["plus", "minus"][offset < timedelta()]
+            abs_offset = str(abs(offset).total_seconds())
+            new_part = "_{}{}s".format(sign, re.sub('[.]', 'point', abs_offset))
+        return orig_part + new_part + appendix
+
     number_none = (corrected_times_file is None) + (offset is None)
     assert number_none == 1
     subs, encoding = load_srt(srt_file)
@@ -231,13 +328,8 @@ def update_times(srt_file, corrected_times_file, offset):
         print("ERROR:  Need at lest two corrected time points, but have", len(corrected_times))
         exit(-1)
     update_with_sentinels(subs, corrected_times, mode)
-    # out file name
-    dot = srt_file.rfind('.')
-    if dot < 0:
-        srt_file_out = srt_file + "_new.srt"
-    else:
-        srt_file_out = srt_file[:dot] + "_new" + srt_file[dot:]
     # update
+    srt_file_out = find_output_name()
     which_pair = 0
     with open(srt_file_out, "w", encoding=encoding) as f:
         for sub in subs:
@@ -250,6 +342,7 @@ def update_times(srt_file, corrected_times_file, offset):
             sub[1] = "{} {} {}".format(sub[1][0], ARROW, sub[1][1])
             print("\n".join(sub), file=f)
     print("Updated subtitles written to", srt_file_out)
+    return srt_file_out
 
 
 if __name__ == "__main__":
@@ -264,18 +357,25 @@ if __name__ == "__main__":
                              '-3 (if the subtitles are 3 seconds too late)')
     is_ok = True
     args = parser.parse_args()
+    # subtitles file
     srt_path = args.srt_path
     if not (os.path.exists(srt_path) and os.path.isfile(srt_path)):
         print("ERROR: The specified srt file", srt_path, "does not exist.")
         is_ok = False
+    srt_path = replace_backslash(srt_path)
+    # corrections file
     corrections_path = args.corrections_path
+    if corrections_path is not None:
+        corrections_path = replace_backslash(corrections_path)
+    # offset value
     offset_value = args.offset_value
+    if offset_value is not None:
+        offset_value = timedelta(seconds=offset_value)
+    # sanity check
     nb_none = (corrections_path is None) + (offset_value is None)
     if nb_none != 1:
         print("ERROR: Precisely one of the options -cor and -off must be specified.")
         is_ok = False
-    if offset_value is not None:
-        offset_value = timedelta(seconds=offset_value)
 
     if is_ok:
         update_times(srt_path, corrections_path, offset_value)
